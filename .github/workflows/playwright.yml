@@ -1,0 +1,86 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  pr-checks:
+    name: PR Checks
+    runs-on: ubuntu-latest
+
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      API_KEY: ${{ secrets.API_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Get Playwright Version
+        run: |
+          PLAYWRIGHT_VERSION=$(bun pm ls | grep @playwright | sed 's/.*@//')
+          echo "Playwright v$PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+
+      - name: Cache Playwright Browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: bunx playwright install --with-deps
+
+      - name: Run Lint and Prettier
+        run: bun run lint
+
+      - name: Run Prettier check
+        run: bun run prettier
+
+      - name: Run Vitest tests
+        run: bun run test:unit --run
+
+      - name: Cache Playwright binaries
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: playwright-binaries-${{ runner.os }}
+          restore-keys: |
+            playwright-binaries-
+
+      - name: Run Playwright tests
+        run: bun playwright test
+
+      - name: Build Next.js
+        env:
+          NODE_ENV: production
+        run: bun next build
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/vitest-results.xml
+            **/playwright-report
