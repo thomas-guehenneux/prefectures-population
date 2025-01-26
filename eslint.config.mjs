@@ -1,16 +1,25 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { includeIgnoreFile } from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import js from "@eslint/js";
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
+const gitignorePath = path.resolve(import.meta.dirname, ".gitignore");
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  includeIgnoreFile(gitignorePath),
+  ...compat.config({
+    extends: [
+      "eslint:recommended",
+      "next/core-web-vitals",
+      "next/typescript",
+      "prettier",
+    ],
+  }),
 ];
 
 export default eslintConfig;
