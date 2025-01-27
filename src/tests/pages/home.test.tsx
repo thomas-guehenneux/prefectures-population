@@ -9,7 +9,7 @@ test.describe("CheckboxとRecharts Lineのテスト", () => {
   /**
    * 線のIDを取得する関数
    * @param {Object} params - 関数のパラメータ
-   * @param {z.infer<typeof labelSchema>} params.category - カテゴリ
+   * @param {z.infer<typeof labelSchema>} params.category - カテゴリー
    * @param {string} params.index - チェックボックスID
    */
   function getLineId({
@@ -77,7 +77,7 @@ test.describe("CheckboxとRecharts Lineのテスト", () => {
     await expect(line).not.toBeVisible();
   });
 
-  test("現在のカテゴリの線を表示し、カテゴリを変更すると別のカテゴリの線が表示されるべき", async ({
+  test("現在のカテゴリーの線を表示し、カテゴリーを変更すると別のカテゴリーの線が表示されるべき", async ({
     page,
   }) => {
     const checkbox = page.locator('input[type="checkbox"]').first();
@@ -96,7 +96,7 @@ test.describe("CheckboxとRecharts Lineのテスト", () => {
     );
     await expect(line).toBeVisible();
 
-    // カテゴリを変更
+    // カテゴリーを変更
     const select = page.locator("select");
     await select.selectOption({ label: otherCategory });
 

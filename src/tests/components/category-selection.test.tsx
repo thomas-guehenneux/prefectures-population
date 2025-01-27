@@ -31,7 +31,7 @@ describe("CategorySelection", () => {
     vi.restoreAllMocks();
   });
 
-  test("カテゴリ選択が正しいオプションとデフォルトオプションで表示される", () => {
+  test("カテゴリー選択が正しいオプションとデフォルトオプションで表示される", () => {
     const select = screen.getByRole("combobox");
     const options = within(select).getAllByRole("option");
 
@@ -47,7 +47,7 @@ describe("CategorySelection", () => {
     expect(selected.textContent).toBe(labelSchema.enum.総人口);
   });
 
-  test("カテゴリ選択を変更し、setCategoryが呼び出される", () => {
+  test("カテゴリー選択を変更し、setCategoryが呼び出される", () => {
     const select = screen.getByRole("combobox");
     fireEvent.change(select, {
       target: { value: labelSchema.enum.生産年齢人口 },

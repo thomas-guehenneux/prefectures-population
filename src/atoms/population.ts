@@ -20,7 +20,7 @@ interface PopulationByCategory {
 }
 
 /**
- * カテゴリごとの都道府県の人口データを保持するアトム
+ * カテゴリーごとの都道府県の人口データを保持するアトム
  */
 export const populationsAtom = atom<PopulationByCategory>({});
 
@@ -34,11 +34,11 @@ export const addPrefecturePopulationsAtom = atom(
     const currentPopulation = get(populationsAtom);
     const { prefName, populations } = newPrefecture;
 
-    // 全てのカテゴリを繰り返して新しい状態を作成
+    // 全てのカテゴリーを繰り返して新しい状態を作成
     const updatedPopulation = { ...currentPopulation };
 
     populations.forEach(({ label, data }) => {
-      // 状態にカテゴリが存在することを確認
+      // 状態にカテゴリーが存在することを確認
       if (!updatedPopulation[label]) {
         updatedPopulation[label] = [];
       }
@@ -58,7 +58,7 @@ export const addPrefecturePopulationsAtom = atom(
         yearEntry[prefName] = value;
       });
 
-      // カテゴリ内の年をソート
+      // カテゴリー内の年をソート
       updatedPopulation[label].sort((a, b) => a.year - b.year);
     });
 
