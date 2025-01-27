@@ -76,8 +76,16 @@ export function PopulationChart() {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart data={populations[category]} accessibilityLayer>
+    <ResponsiveContainer
+      width="100%"
+      height={400}
+      className="rounded-lg border border-slate-600 opacity-100 transition-opacity duration-500 starting:opacity-0"
+    >
+      <LineChart
+        data={populations[category]}
+        accessibilityLayer
+        margin={{ top: 20, right: 16, bottom: 20, left: 16 }}
+      >
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="year"

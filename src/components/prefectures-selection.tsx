@@ -25,13 +25,14 @@ export function PrefecturesSelection() {
   return (
     <ul className="grid grid-cols-3 md:grid-cols-5">
       {prefectures.map((prefecture) => (
-        <li key={prefecture.prefCode}>
+        <li key={prefecture.prefCode} className="flex items-center gap-x-1.5">
           <input
             type="checkbox"
             id={prefecture.prefName}
             name={prefecture.prefName}
             value={prefecture.prefCode}
             onChange={() => handleToggle(prefecture.prefCode)}
+            className="size-4 checked:bg-sky-600"
           />
           <label htmlFor={prefecture.prefName}>{prefecture.prefName}</label>
         </li>

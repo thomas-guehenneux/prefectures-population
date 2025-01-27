@@ -28,7 +28,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} py-4`}>
         <Provider prefectures={prefectures}>{children}</Provider>
       </body>
     </html>
