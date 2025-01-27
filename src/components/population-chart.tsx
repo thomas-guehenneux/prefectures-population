@@ -15,11 +15,11 @@ import { categoryAtom } from "@/atoms/category";
 import { populationsAtom } from "@/atoms/population";
 import { prefecturesAtom } from "@/atoms/prefectures";
 import { useAtomValue } from "jotai";
-
 import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import { useMemo } from "react";
 
 const CustomTooltip = ({
   active,
@@ -71,7 +71,14 @@ export function PopulationChart() {
       ? Object.keys(populations[category][0]).filter((key) => key !== "year")
       : [];
 
-  if (!populations[category]) {
+  const isChecked = useMemo(
+    () => (key: string) =>
+      checkedPrefectures.some((prefecture) => prefecture.prefName === key),
+    [checkedPrefectures]
+  );
+
+  // 都道府県が選択されていない場合
+  if (!prefectures.some((prefecture) => prefecture.checked)) {
     return <p className="text-lg">都道府県を選択してください。</p>;
   }
 
@@ -118,18 +125,8 @@ export function PopulationChart() {
                 (prefecture) => prefecture.prefName === key
               )?.color
             }
-            legendType={
-              checkedPrefectures.find(
-                (prefecture) => prefecture.prefName === key
-              )
-                ? "line"
-                : "none"
-            }
-            hide={
-              !checkedPrefectures.find(
-                (prefecture) => prefecture.prefName === key
-              )
-            }
+            legendType={isChecked(key) ? "line" : "none"}
+            hide={isChecked(key) ? false : true}
             strokeWidth={2}
             dot={false}
           />
