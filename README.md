@@ -28,7 +28,7 @@ powershell -c "irm bun.sh/install.ps1 | iex"
 bun upgrade
 ```
 
-3. .env.exampleを参考にし、.envファイルを作成してください。API_KEYとAPI_URLをhttps://yumemi-frontend-engineer-codecheck-api.vercel.app/api-docの値に設定してくだい。
+3. .env.exampleを参考にし、.envファイルを作成してください。API_KEYとAPI_URL をhttps://yumemi-frontend-engineer-codecheck-api.vercel.app/api-docの値に設定してくだい。
 
 ## 開発サーバーを起動する
 
